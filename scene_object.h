@@ -7,6 +7,7 @@ class Scene_object : public QLabel
 {
    Q_OBJECT
 protected:
+    public:
     double n_x;
     double n_y;
 
@@ -22,9 +23,9 @@ protected:
     double get_form_width();
     double get_form_height();
 
-    int coord_max;//change?
+    double coord_max;//change?
 
-public:
+
     explicit Scene_object(int x,int y,QString pixmap_path,QWidget* central_widget=0);
     virtual ~Scene_object(){}
 

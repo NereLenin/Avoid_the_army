@@ -20,9 +20,9 @@ void Povistka::make_step(Person *person=0)
 
     if((n_x >coord_max+5))
     {
-        printf("yep\n");
+      //  printf("yep\n");
         n_y = person->get_y() + (person->get_n_height()/3);
-        block_speed+=0.02;
+        block_speed+=0.01;
     }
 
 }
@@ -44,17 +44,17 @@ bool Povistka::isDilivered(Person *person)
         {
 
             //n_x = person->get_x();
-            qDebug() << "To reprint"<< endl;
+         //   qDebug() << "To reprint"<< endl;
 
-            qDebug() << "gotcha povistka x:" << n_x << " y:" << n_y << endl;
-            qDebug() << "person x:" << person->get_x() << " y:" << person->get_y() << endl;
+         //   qDebug() << "gotcha povistka x:" << n_x << " y:" << n_y << endl;
+         //   qDebug() << "person x:" << person->get_x() << " y:" << person->get_y() << endl;
 
             return true;
         }
         else
         {
-            qDebug() << "not gotcha povistka x:" << n_x << " y:" << n_y << endl;
-            qDebug() << "person x:" << person->get_x() << " y:" << person->get_y() << endl;
+          //  qDebug() << "not gotcha povistka x:" << n_x << " y:" << n_y << endl;
+          //  qDebug() << "person x:" << person->get_x() << " y:" << person->get_y() << endl;
 
         }
      }

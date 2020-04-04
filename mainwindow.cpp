@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 void MainWindow::reprint(Ui::MainWindow *ui)
 {
     if(!gotcha)
@@ -16,20 +17,21 @@ void MainWindow::reprint(Ui::MainWindow *ui)
 
     person->reprint();
 
+    //qDebug() << "person " << person->get_x() << "," << person->get_y()<< " form" << person->get_form_x() << "," << person->get_form_y()  << "form width " << person->get_form_width() << "/" << person->width() << " per " << person->width_per_height << " width " << person->get_n_width() << endl;
+/*
     if(povistka->isDilivered(person))
     {
         i=0;
         gotcha = true;
         sound->stop();
         end_fon->show();
-        end_fon->setText("Вы попались\nПопробуете еще раз?");
+        end_fon->setText("Попалась, вонючка?\nПопробуешь еще раз?");
 
         end_sound->play();
 
     }
 
-
-
+*/
     }
 
 }
@@ -70,6 +72,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
+    lines = new QFrame*[100];//массив блоков
+
+    for(int j=0;j<100;j++)//создаем каждый блок
+    {
+
+        lines[j] = new QFrame(this);
+        lines[j]->hide();
+    }
+
+
     gotcha = want_exit = ready_to_play = false;
 
     first_start = true;
@@ -83,13 +95,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_2->hide();
     ui->pushButton_4->hide();
     ui->pushButton->hide();
-    ui->pushButton_3->hide();
+  //  ui->pushButton_3->hide();
 
     //создаем землю
     terrain = new Terrain(10,":/img/terrain.jpg",ui->centralwidget);
 
     //создаем обьекты
     blocks = new Block*[4];//массив блоков
+
+
 
     bool ne_chentniy;
     for(int j=0;j<4;j++)//создаем каждый блок
@@ -116,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent)
     povistka = new Povistka(20,20,":/img/convert_2.jpg",ui->centralwidget);
 
 
-    //создаем задний фон который делает затемнение
+    //создаем задний фон который делает
     end_fon = new Scene_object(0,0,"",ui->centralwidget);
     end_fon->setFont(QFont("Courier 10 Pitch",20,QFont::Bold));
     end_fon->setAlignment(Qt::AlignCenter);
@@ -125,7 +139,12 @@ MainWindow::MainWindow(QWidget *parent)
     //просто this конструктор?
     end_fon->setStyleSheet("background-color: rgba(1,1,1, 1);color:white;");
 
+    //end_fon->show();
+//    end_fon->hide();
 
+
+    //выбор при проигрыше
+    //вместо блока добавить класс clickable object и занаследоваться от него в povistka и тут сделать
     yes = new Block(75,0,false,":/img/ok.png",ui->centralwidget);
     yes->set_height(10);
     yes->set_width_per_height(1);
@@ -147,12 +166,13 @@ MainWindow::MainWindow(QWidget *parent)
     //создаем воспроизведение музыки
     sound = new QSound(":/music/main.wav",this);
     sound->setLoops(QSound::Infinite);//воспроизводим бесконечно
+  //  sound->play();//говорим играть
 
     end_sound = new QSound(":/music/end.wav",this);
     end_sound->setLoops(QSound::Infinite);//воспроизводим бесконечно
+    end_sound->stop();//говорим не играть
 
-
-
+   // paint = new QPainter(this);//[100];//массив блоков
 
 
 }
@@ -166,6 +186,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом на таймер
 {
+    //сделать одну общую функцию reprint_scene()
+    //которая будет использоваться и отсюда и из таймера
+    //обновляет размеры и положения всех обьектов
 
    ui->background->resize(event->size());
    end_fon->resize(event->size());
@@ -182,6 +205,8 @@ void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом н
    no->new_resize();
    yes->new_resize();
 
+   repaint();
+
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -192,7 +217,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_block2_linkActivated(const QString &link)
 {
-    //qDebug() << "пошол нахуй" << endl;
+
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -208,6 +233,8 @@ void MainWindow::on_pushButton_3_clicked()
     //person_y+=10;
     //reprint(ui);
    // qDebug() << "y:" << person_y << endl;
+    person->stopAnimation();
+    person->set_x(person->get_x()+1);
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -241,10 +268,14 @@ void MainWindow::on_block4_clicked()
 
 void MainWindow::on_yes_clicked()
 {
-    qDebug() << "Yes clicked. " << endl;
+    //qDebug() << "Yes clicked. " << endl;
     if(want_exit)
     {
-        exit(0);
+
+        close();
+       // this->~MainWindow();
+
+        //return;
     }
     else if(first_start)
     {
@@ -255,7 +286,9 @@ void MainWindow::on_yes_clicked()
 
      yes->hide();
      no->hide();
-    }else{
+    }
+    else
+    {
 
         toStartPosition();
     }
@@ -275,7 +308,7 @@ void MainWindow::on_no_clicked()
         if(first_start)
            end_fon->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
         else
-        end_fon->setText("Вы попалсь\nПопробуете еще раз?");
+        end_fon->setText("Попалась, вонючка?\nПопробуешь еще раз?");
 
         want_exit = false;
     }
@@ -283,15 +316,16 @@ void MainWindow::on_no_clicked()
 
 void MainWindow::slotTimerAlarm()
 {
-    /* Ежесекундно обновляем данные по текущему времени
-     * Перезапускать таймер не требуется
-     * */
+
     if(first_start)
     {
         //qDebug() << "First start" << endl;
       if(ready_to_play)
         {
 
+
+          for (int j=0;j<100;j++)
+            lines[j]->show();
 
         if(i<0.95)//просветление по красоте
         {
@@ -337,3 +371,4 @@ void MainWindow::slotTimerAlarm()
     }
 
 }
+

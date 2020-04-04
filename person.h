@@ -7,6 +7,7 @@ class Person : public Scene_object
 {
     Q_OBJECT
 private:
+public:
     int animation_frame;
     bool Animation;
     int stick_number;
@@ -15,7 +16,7 @@ private:
 
     int block_count;
 
-public:
+
     explicit Person(int x, int y, QString image_path,QWidget* central_widget=0);
 
     void set_StickNumber(int block_number);

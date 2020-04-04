@@ -35,7 +35,7 @@ void Block::make_step()
     else n_x-=block_speed;
     //проверку на выход за границу можно сюда сунуть так то
 
-    if((!direction)&&(n_x+get_n_width()) <=-10)
+    if((!direction)&&(n_x+get_n_width()) <=0-get_n_width())
     {
 
        //int rand = 1+rand()%50;//потом

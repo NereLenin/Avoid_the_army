@@ -60,16 +60,8 @@ void Person::reprint()
         n_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/5);
         n_y = blocks[stick_number-1]->get_y() + (blocks[stick_number-1]->get_n_height());
 
-        if(n_x < 0)//если блок убегает влево вместе с нами
-        {
-            n_x = 0;
-        }
-        if(n_x > 100)//если блок убегает вправо вместе с нами
-        {
-            n_x = 100;
-        }
-        //если блок ушел за пределы окна а мы на нем
-        if(((blocks[stick_number-1]->get_x()+get_n_width()) < 0) || (blocks[stick_number-1]->get_x() > 100) )
+         //если блок ушел за пределы окна а мы на нем
+        if( (((blocks[stick_number-1]->get_x()+blocks[stick_number-1]->get_n_width()) < 0)&& (!blocks[stick_number-1]->direction) )|| ( (blocks[stick_number-1]->get_x() > coord_max)&& (blocks[stick_number-1]->direction )) )
         {
             stick_number = 0;//то мы скидываемся с блока
         }
@@ -80,16 +72,33 @@ void Person::reprint()
 
         if(n_y >0)//если мы не к чему не привязаны и анимации нет
         {
-            n_y-=2;//падаем вниз до нуля
+            n_y-=2;//падаем вниз до нуля или блока
+
+            for(int i=0;i<block_count;i++)//смотрим не упал ли на какой блок
+            {
+                if(blocks[i]->get_x() <= get_x() && blocks[i]->get_x()+blocks[i]->get_n_width() >= get_x() &&
+                   blocks[i]->get_y() <= get_y())
+                {
+                    set_StickNumber(i+1);//если упал привязываем
+                }
+            }
+
+
         }
 
     }
 
     }//end blocks not null check
-    else
+
+    if(n_x < 0)//если блок убегает влево вместе с нами
     {
-        //qDebug() << "blocks zero "  << endl;
+        n_x = 0;
     }
+    if(n_x+get_n_width() > coord_max)//если блок убегает вправо вместе с нами
+    {
+        n_x = coord_max-get_n_width();
+    }
+
 
     setGeometry(get_form_x(),get_form_y(),get_form_width(),get_form_height());
 }

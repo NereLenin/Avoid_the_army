@@ -191,7 +191,7 @@ image:url(:/img/person_2.png);
      </rect>
     </property>
     <property name="text">
-     <string>restart</string>
+     <string>fall</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_4">

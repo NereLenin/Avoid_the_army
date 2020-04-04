@@ -7,6 +7,8 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QSound>
+#include <QPainter>
+
 #include "block.h"
 #include "person.h"
 #include "povistka.h"
@@ -23,6 +25,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void ShowGrid();
 
 private slots:
     void on_pushButton_2_clicked();
@@ -60,6 +64,8 @@ private:
     void reprint(Ui::MainWindow *ui);
 
     Block **blocks;//mass blocks
+
+    QFrame **lines;//mass blocks
 
     Person *person;
     Povistka *povistka;

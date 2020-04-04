@@ -6,6 +6,7 @@ class Block: public Scene_object
 {
     Q_OBJECT
 protected:
+public:
     double block_speed;
 
     //to protection
@@ -17,6 +18,7 @@ public:
     void set_speed(double block_speed);//убрать?
 
     int get_speed();//убрать?
+    bool get_direction();
 
     void make_step();
 

@@ -62,10 +62,10 @@ double Scene_object::get_y()
 
 double Scene_object::get_form_width()//make width per height
 {
-    if(hard_width == 1)
-        return get_form_height()*width_per_height;
-    else
-        return (hard_width)*((parentWidget()->width())/coord_max);
+   // if(hard_width == 1)
+        return (width_per_height*n_height)*((parentWidget()->height())/coord_max);
+    //else
+    //    return (hard_width)*((parentWidget()->width())/coord_max);
 
 }
 
@@ -79,9 +79,13 @@ double Scene_object::get_form_height()
 
 double Scene_object::get_n_width()
 {
-    if(hard_width == 1)
-        return n_height*width_per_height;
-    else return hard_width;
+    //if(hard_width == 1)
+        return get_form_width()/(parentWidget()->width()/coord_max);
+
+            //return get_form_width()/((parentWidget()->width())/coord_max);
+
+        //return get_form_width()/((parentWidget()->height())/coord_max);
+   // else return hard_width;
 }
 
 double Scene_object::get_n_height()
