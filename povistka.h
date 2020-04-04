@@ -1,22 +1,26 @@
 #ifndef POVISTKA_H
 #define POVISTKA_H
-#include "block.h"
+#include "moving_object.h"
 #include "person.h"
 
-class Povistka : public Block
+class Povistka : public Moving_object
 {
     Q_OBJECT
 private:
+
+    Person *recipient;
     void make_step();
 
 public:
-    explicit Povistka(int x,int y,QString pixmap_path, QWidget* central_widget=0);
+    explicit Povistka(int x,int y,QString pixmap_path, QWidget* central_widget);
 
     void SetRecipient(Person *person);
 
-    void make_step(Person *person);
+    void reset_speed();
 
-    bool isDilivered(Person *person);
+    void reprint();
+
+    bool isDilivered();
 };
 
 #endif // POVISTKA_H

@@ -1,33 +1,42 @@
 #include "povistka.h"
 
 Povistka::Povistka(int x, int y,QString pixmap_path, QWidget* central_widget)
-    : Block(x,y,false,pixmap_path,central_widget)
+    : Moving_object(x,y,false,pixmap_path,central_widget)
 {
 
+   recipient = 0;
    n_height = 9;
    width_per_height = 1.3;
 
 }
 
-void Povistka::make_step(Person *person=0)
+
+void Povistka::SetRecipient(Person *person)
 {
-    if(person == 0)
+    if(person == 0) return;
+
+    recipient = person;
+
+
+}
+void Povistka::reprint()
+{
+    if(recipient == 0)
     {
         return;
     }
 
-    Block::make_step();
 
     if((n_x >coord_max+5))
     {
-      //  printf("yep\n");
-        n_y = person->get_y() + (person->get_n_height()/3);
-        block_speed+=0.01;
+        n_y = recipient->get_y() + (recipient->get_n_height()/3);
+        speed+=0.01;
     }
 
+    Moving_object::reprint();
 }
 
-bool Povistka::isDilivered(Person *person)
+bool Povistka::isDilivered()
 {
 
     //пересечение
@@ -35,16 +44,13 @@ bool Povistka::isDilivered(Person *person)
     //если после вычитания окажется за ним
 
     //если по высоте к игроку
-    if( (n_y > (person->get_y()) && (n_y <(person->get_y())+(person->get_n_height()*0.6))))
+    if( (n_y > (recipient->get_y()) && (n_y <(recipient->get_y())+(recipient->get_n_height()*0.6))))
     {
       //если пересекается ||
       //будет пересекаться на след шаге
-      if((n_x <= (person->get_x() + (person->get_n_width()/2))&&(n_x >= person->get_x()))||
-      ((n_x >= (person->get_x()))&&(n_x-block_speed <= (person->get_x()))) )
+      if((n_x <= (recipient->get_x() + (recipient->get_n_width()/2))&&(n_x >= recipient->get_x()))||
+      ((n_x >= (recipient->get_x()))&&(n_x-speed <= (recipient->get_x()))) )
         {
-
-            //n_x = person->get_x();
-         //   qDebug() << "To reprint"<< endl;
 
          //   qDebug() << "gotcha povistka x:" << n_x << " y:" << n_y << endl;
          //   qDebug() << "person x:" << person->get_x() << " y:" << person->get_y() << endl;
@@ -59,4 +65,10 @@ bool Povistka::isDilivered(Person *person)
         }
      }
     return false;
+}
+
+
+void Povistka::reset_speed()
+{
+    Moving_object::speed = 0.2;
 }

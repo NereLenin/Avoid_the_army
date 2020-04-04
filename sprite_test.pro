@@ -20,6 +20,7 @@ SOURCES += \
     block.cpp \
     main.cpp \
     mainwindow.cpp \
+    moving_object.cpp \
     person.cpp \
     povistka.cpp \
     scene_object.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 HEADERS += \
     block.h \
     mainwindow.h \
+    moving_object.h \
     person.h \
     povistka.h \
     scene_object.h \

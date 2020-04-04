@@ -4,10 +4,8 @@
 #include <QMainWindow>
 #include <QResizeEvent>
 #include <QDebug>
-#include <QPixmap>
 #include <QTimer>
 #include <QSound>
-#include <QPainter>
 
 #include "block.h"
 #include "person.h"
@@ -64,8 +62,6 @@ private:
     void reprint(Ui::MainWindow *ui);
 
     Block **blocks;//mass blocks
-
-    QFrame **lines;//mass blocks
 
     Person *person;
     Povistka *povistka;

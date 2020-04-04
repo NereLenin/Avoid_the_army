@@ -16,10 +16,9 @@ Person::Person(int x, int y,QString image_path, QWidget* central_widget)
     //show();
 }
 
-int Person::get_form_y()
+double Person::get_form_y()
 {
-    //10 - tirrain height
-    return (parentWidget()->height())-((parentWidget()->height()/coord_max) * (10+n_y+(n_height*0.85)));
+    return (parentWidget()->height())-((parentWidget()->height()/coord_max) * (n_y+(n_height*0.85)));
 }
 void Person::reprint()
 {
@@ -61,7 +60,7 @@ void Person::reprint()
         n_y = blocks[stick_number-1]->get_y() + (blocks[stick_number-1]->get_n_height());
 
          //если блок ушел за пределы окна а мы на нем
-        if( (((blocks[stick_number-1]->get_x()+blocks[stick_number-1]->get_n_width()) < 0)&& (!blocks[stick_number-1]->direction) )|| ( (blocks[stick_number-1]->get_x() > coord_max)&& (blocks[stick_number-1]->direction )) )
+        if( (((blocks[stick_number-1]->get_x()+(blocks[stick_number-1]->get_n_width())/3) < 0)&& (!blocks[stick_number-1]->get_direction()) )|| ( (blocks[stick_number-1]->get_x() > coord_max-(blocks[stick_number-1]->get_n_width())/3)&& (blocks[stick_number-1]->get_direction())) )
         {
             stick_number = 0;//то мы скидываемся с блока
         }
@@ -76,9 +75,14 @@ void Person::reprint()
 
             for(int i=0;i<block_count;i++)//смотрим не упал ли на какой блок
             {
-                if(blocks[i]->get_x() <= get_x() && blocks[i]->get_x()+blocks[i]->get_n_width() >= get_x() &&
-                   blocks[i]->get_y() <= get_y())
+
+                if((get_x()+get_n_width() > blocks[i]->get_x()  && get_x() < blocks[i]->get_x()+blocks[i]->get_n_width()) &&
+                   get_y()<= blocks[i]->get_y()+blocks[i]->get_n_height() &&
+                   get_y() >= blocks[i]->get_y())
+                   //get_y()+get_n_height() > blocks[i]->get_y()+blocks[i]->get_n_height())
                 {
+                    stopAnimation();
+                    //stick_number = i+1;
                     set_StickNumber(i+1);//если упал привязываем
                 }
             }
@@ -98,6 +102,8 @@ void Person::reprint()
     {
         n_x = coord_max-get_n_width();
     }
+
+    if(n_y < 10) n_y = 10;
 
 
     setGeometry(get_form_x(),get_form_y(),get_form_width(),get_form_height());

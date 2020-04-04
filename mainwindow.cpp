@@ -18,8 +18,8 @@ void MainWindow::reprint(Ui::MainWindow *ui)
     person->reprint();
 
     //qDebug() << "person " << person->get_x() << "," << person->get_y()<< " form" << person->get_form_x() << "," << person->get_form_y()  << "form width " << person->get_form_width() << "/" << person->width() << " per " << person->width_per_height << " width " << person->get_n_width() << endl;
-/*
-    if(povistka->isDilivered(person))
+
+    if(povistka->isDilivered())
     {
         i=0;
         gotcha = true;
@@ -31,7 +31,7 @@ void MainWindow::reprint(Ui::MainWindow *ui)
 
     }
 
-*/
+
     }
 
 }
@@ -40,17 +40,16 @@ void MainWindow::toStartPosition()
 {
 
     person->set_x(10);
-    person->set_y(0);
+    person->set_y(10);
     person->stopAnimation();
-
-    povistka->set_x(20);
-    povistka->set_y(20);
-    povistka->set_speed(0.2);
+    povistka->set_x(30);
+    povistka->set_y(30);
+    povistka->reset_speed();
 
     for(int j=0;j<4;j++)//создаем каждый блок
     {
-        blocks[j]->set_x(10+(j*25));
-        blocks[j]->set_y(10+(j*20));
+        blocks[j]->set_x(10+(j*23));
+        blocks[j]->set_y(20+(j*19));
     }
 
     gotcha = false;
@@ -72,14 +71,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
-    lines = new QFrame*[100];//массив блоков
 
-    for(int j=0;j<100;j++)//создаем каждый блок
-    {
 
-        lines[j] = new QFrame(this);
-        lines[j]->hide();
-    }
+   // lines = new QFrame*[100];//массив блоков
+
+  //  for(int j=0;j<100;j++)//массив линий
+ //   {
+
+  //      lines[j] = new QFrame(this);
+ //       lines[j]->hide();
+  //  }
 
 
     gotcha = want_exit = ready_to_play = false;
@@ -98,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
   //  ui->pushButton_3->hide();
 
     //создаем землю
-    terrain = new Terrain(10,":/img/terrain.jpg",ui->centralwidget);
+    terrain = new Terrain(11,":/img/terrain.jpg",ui->centralwidget);
 
     //создаем обьекты
     blocks = new Block*[4];//массив блоков
@@ -109,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent)
     for(int j=0;j<4;j++)//создаем каждый блок
     {
         ne_chentniy = (j % 2 != 0);
-        blocks[j] = new Block(10+(j*25),10+(j*20),ne_chentniy,":/img/block.png",ui->centralwidget);
+        blocks[j] = new Block(10+(j*23),20+(j*19),ne_chentniy,":/img/block.png",ui->centralwidget);
     }
 
 
@@ -121,13 +122,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //создаем персонажа
-    person = new Person(10,0,":/img/person_2.png",ui->centralwidget);
+    person = new Person(10,10,":/img/person_2.png",ui->centralwidget);
     person->setFrameShape(QFrame::Box);//добавляем наглядную рамку
 
     person->SetBlocksToStick(blocks,4);//добавляем блоки к которым будем прилипать
 
     //создаем повестку
-    povistka = new Povistka(20,20,":/img/convert_2.jpg",ui->centralwidget);
+    povistka = new Povistka(30,30,":/img/convert_2.jpg",ui->centralwidget);
+    povistka->SetRecipient(person);
 
 
     //создаем задний фон который делает
@@ -145,11 +147,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     //выбор при проигрыше
     //вместо блока добавить класс clickable object и занаследоваться от него в povistka и тут сделать
-    yes = new Block(75,0,false,":/img/ok.png",ui->centralwidget);
+    yes = new Block(75,10,false,":/img/ok.png",ui->centralwidget);
     yes->set_height(10);
     yes->set_width_per_height(1);
 
-    no = new Block(10,0,false,":/img/err.png",ui->centralwidget);
+    no = new Block(10,10,false,":/img/err.png",ui->centralwidget);
     no->set_height(10);
     no->set_width_per_height(1);
 
@@ -175,6 +177,8 @@ MainWindow::MainWindow(QWidget *parent)
    // paint = new QPainter(this);//[100];//массив блоков
 
 
+
+
 }
 
 MainWindow::~MainWindow()
@@ -186,6 +190,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом на таймер
 {
+
     //сделать одну общую функцию reprint_scene()
     //которая будет использоваться и отсюда и из таймера
     //обновляет размеры и положения всех обьектов
@@ -193,10 +198,13 @@ void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом н
    ui->background->resize(event->size());
    end_fon->resize(event->size());
 
+
    for(int j=0;j<4;j++)
    {
        blocks[j]->new_resize();
    }
+
+
 
    person->new_resize();
    povistka->new_resize();
@@ -205,7 +213,6 @@ void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом н
    no->new_resize();
    yes->new_resize();
 
-   repaint();
 
 }
 
@@ -234,7 +241,9 @@ void MainWindow::on_pushButton_3_clicked()
     //reprint(ui);
    // qDebug() << "y:" << person_y << endl;
     person->stopAnimation();
+    person->set_StickNumber(0);
     person->set_x(person->get_x()+1);
+    person->set_y(person->get_y()-30);
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -323,10 +332,6 @@ void MainWindow::slotTimerAlarm()
       if(ready_to_play)
         {
 
-
-          for (int j=0;j<100;j++)
-            lines[j]->show();
-
         if(i<0.95)//просветление по красоте
         {
             //qDebug() << "i: " << 0.99 - i << endl;
@@ -344,12 +349,7 @@ void MainWindow::slotTimerAlarm()
 
     ui->block_old->setText(QString::number(i+=0.01));
 
-    for(int j=0;j<4;j++)
-    {
-        blocks[j]->make_step();
-    }
-
-    povistka->make_step(person);
+   // povistka->make_step(person);
 
     reprint(ui);
 
