@@ -1,6 +1,8 @@
 QT       += core gui
 #QMAKE_LFLAGS += -static -static-libgcc
 
+QMAKE_LFLAGS += -nostdlib++
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -18,6 +20,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     block.cpp \
+    captures.cpp \
+    img_button.cpp \
     main.cpp \
     mainwindow.cpp \
     moving_object.cpp \
@@ -28,6 +32,8 @@ SOURCES += \
 
 HEADERS += \
     block.h \
+    captures.h \
+    img_button.h \
     mainwindow.h \
     moving_object.h \
     person.h \

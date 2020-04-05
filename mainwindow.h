@@ -9,6 +9,7 @@
 
 #include "block.h"
 #include "person.h"
+#include "captures.h"
 #include "povistka.h"
 #include "terrain.h"
 
@@ -68,10 +69,11 @@ private:
 
     Terrain *terrain;
 
-    Scene_object *end_fon;
+    Captures *titles;
+    //Scene_object *end_fon;
 
-    Block *yes;
-    Block *no;
+   // Block *yes;
+   // Block *no;
 
     double i;
 

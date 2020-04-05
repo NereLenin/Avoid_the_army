@@ -24,9 +24,9 @@ void MainWindow::reprint(Ui::MainWindow *ui)
         i=0;
         gotcha = true;
         sound->stop();
-        end_fon->show();
-        end_fon->setText("Попалась, вонючка?\nПопробуешь еще раз?");
-
+  //      end_fon->show();
+        titles->setText("Попалась, вонючка?\nПопробуешь еще раз?");
+        titles->show_end_scene();
         end_sound->play();
 
     }
@@ -57,10 +57,10 @@ void MainWindow::toStartPosition()
     end_sound->stop();
     sound->play();
 
-    yes->hide();
-    no->hide();
-    end_fon->hide();
-    end_fon->setStyleSheet("background-color: rgba(1,1,1, 0);color:white;");
+  //  yes->hide();
+ //   no->hide();
+ //   end_fon->hide();
+ //   end_fon->setStyleSheet("background-color: rgba(1,1,1, 0);color:white;");
 }
 
 
@@ -131,15 +131,13 @@ MainWindow::MainWindow(QWidget *parent)
     povistka = new Povistka(30,30,":/img/convert_2.jpg",ui->centralwidget);
     povistka->SetRecipient(person);
 
+    titles = new Captures(":/img/ok.png",":/img/err.png",ui->centralwidget);
+    titles->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
 
     //создаем задний фон который делает
-    end_fon = new Scene_object(0,0,"",ui->centralwidget);
-    end_fon->setFont(QFont("Courier 10 Pitch",20,QFont::Bold));
-    end_fon->setAlignment(Qt::AlignCenter);
-    end_fon->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
+   // end_fon = new Scene_object(0,0,"",ui->centralwidget);
 
-    //просто this конструктор?
-    end_fon->setStyleSheet("background-color: rgba(1,1,1, 1);color:white;");
+    //"Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?"
 
     //end_fon->show();
 //    end_fon->hide();
@@ -147,16 +145,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     //выбор при проигрыше
     //вместо блока добавить класс clickable object и занаследоваться от него в povistka и тут сделать
-    yes = new Block(75,10,false,":/img/ok.png",ui->centralwidget);
-    yes->set_height(10);
-    yes->set_width_per_height(1);
+   // yes = new Block(75,10,false,":/img/ok.png",ui->centralwidget);
+   // yes->set_height(10);
+    //yes->set_width_per_height(1);
 
-    no = new Block(10,10,false,":/img/err.png",ui->centralwidget);
-    no->set_height(10);
-    no->set_width_per_height(1);
+    //no = new Block(10,10,false,":/img/err.png",ui->centralwidget);
+    //no->set_height(10);
+    //no->set_width_per_height(1);
 
-    connect(yes, SIGNAL(clicked()), this, SLOT(on_yes_clicked()));
-    connect(no, SIGNAL(clicked()), this, SLOT(on_no_clicked()));
+    connect(titles->get_yes_btn(), SIGNAL(clicked()), this, SLOT(on_yes_clicked()));
+    connect(titles->get_no_btn(), SIGNAL(clicked()), this, SLOT(on_no_clicked()));
 
     //создаем перерисовочный таймер
     timer = new QTimer();
@@ -196,7 +194,7 @@ void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом н
     //обновляет размеры и положения всех обьектов
 
    ui->background->resize(event->size());
-   end_fon->resize(event->size());
+   titles->new_resize();
 
 
    for(int j=0;j<4;j++)
@@ -209,9 +207,6 @@ void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом н
    person->new_resize();
    povistka->new_resize();
    terrain->new_resize();
-
-   no->new_resize();
-   yes->new_resize();
 
 
 }
@@ -235,11 +230,7 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    //toStartPosition();
 
-    //person_y+=10;
-    //reprint(ui);
-   // qDebug() << "y:" << person_y << endl;
     person->stopAnimation();
     person->set_StickNumber(0);
     person->set_x(person->get_x()+1);
@@ -277,29 +268,25 @@ void MainWindow::on_block4_clicked()
 
 void MainWindow::on_yes_clicked()
 {
-    //qDebug() << "Yes clicked. " << endl;
+
     if(want_exit)
     {
 
         close();
-       // this->~MainWindow();
-
-        //return;
     }
     else if(first_start)
     {
      ready_to_play = true;
      sound->play();//говорим играть
-     i=0;
-     end_fon->setText("");
 
-     yes->hide();
-     no->hide();
+     titles->setText("");
+     titles->show_start_scene();
+
     }
     else
     {
-
         toStartPosition();
+        titles->hide();
     }
 
 
@@ -309,15 +296,15 @@ void MainWindow::on_no_clicked()
 {
     if(!want_exit)
     {
-        end_fon->setText("Вы уверены что хотите выйти?");
+        titles->setText("Вы уверены что хотите выйти?");
         want_exit = true;
     }
     else
     {
         if(first_start)
-           end_fon->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
+           titles->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
         else
-        end_fon->setText("Попалась, вонючка?\nПопробуешь еще раз?");
+        titles->setText("Попалась, вонючка?\nПопробуешь еще раз?");
 
         want_exit = false;
     }
@@ -326,48 +313,28 @@ void MainWindow::on_no_clicked()
 void MainWindow::slotTimerAlarm()
 {
 
-    if(first_start)
+    if(first_start)//если запустили первый раз
     {
-        //qDebug() << "First start" << endl;
-      if(ready_to_play)
+      if(ready_to_play)//если нажали да и готовы игать
         {
 
-        if(i<0.95)//просветление по красоте
-        {
-            //qDebug() << "i: " << 0.99 - i << endl;
-        end_fon->setStyleSheet(QString("background-color: rgba(1,1,1, %1);color:white;").arg((0.99-i)));
-        i+=0.01;
+            //show_start_scene
+            if(!titles->get_start_scene())//если сцена закончилась
+                first_start = false;//как только стартовая сцена закончена говорим шо больше не первый раз запускаем
+
+            titles->reprint();//перерисовываем титры
         }
-        else
-        {
-            end_fon->hide();
-            i+=0.01;
-            first_start = false;
-        }
-      }
-    }else if(!gotcha){
+
+    }else if(!gotcha){//если не первый старт и игра не закончена
 
     ui->block_old->setText(QString::number(i+=0.01));
 
-   // povistka->make_step(person);
+    reprint(ui);//перересовываем сцену
 
-    reprint(ui);
-
-    }//end gotcha
-    else
+    }
+    else//Если попался
     {
-        if(i<0.95)//затемнение по красоте
-        {
-        end_fon->setStyleSheet(QString("background-color: rgba(1,1,1, %1);color:white;").arg(i));
-
-        i+=0.01;
-        }
-        else{
-
-            no->show();
-            yes->show();
-        }
-
+       titles->reprint();//перересовываем титры
     }
 
 }
