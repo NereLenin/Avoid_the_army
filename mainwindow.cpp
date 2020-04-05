@@ -19,18 +19,17 @@ void MainWindow::reprint(Ui::MainWindow *ui)
 
     //qDebug() << "person " << person->get_x() << "," << person->get_y()<< " form" << person->get_form_x() << "," << person->get_form_y()  << "form width " << person->get_form_width() << "/" << person->width() << " per " << person->width_per_height << " width " << person->get_n_width() << endl;
 
-    if(povistka->isDilivered())
+ /*   if(povistka->isDilivered())
     {
         i=0;
         gotcha = true;
         sound->stop();
-  //      end_fon->show();
         titles->setText("Попалась, вонючка?\nПопробуешь еще раз?");
         titles->show_end_scene();
         end_sound->play();
 
     }
-
+*/
 
     }
 
@@ -123,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //создаем персонажа
     person = new Person(10,10,":/img/person_2.png", ":/music/jump.wav" ,ui->centralwidget);
-    person->setFrameShape(QFrame::Box);//добавляем наглядную рамку
+    //person->setFrameShape(QFrame::Box);//добавляем наглядную рамку
 
     person->SetBlocksToStick(blocks,4);//добавляем блоки к которым будем прилипать
 
@@ -250,24 +249,38 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_block1_clicked()
 {
+    if(person->get_StickNumber()!=1)
+       blocks[0]->start_animation();
+
     person->set_StickNumber(1);
+
 }
 
 void MainWindow::on_block2_clicked()
 {
+    if(person->get_StickNumber()!=2)
+       blocks[1]->start_animation();
+
     person->set_StickNumber(2);
 }
 
 void MainWindow::on_block3_clicked()
 {
+    if(person->get_StickNumber()!=3)
+       blocks[2]->start_animation();
 
     person->set_StickNumber(3);
+\
 }
 
 void MainWindow::on_block4_clicked()
 {
 
+    if(person->get_StickNumber()!=4)
+       blocks[3]->start_animation();
+
      person->set_StickNumber(4);
+
 }
 
 void MainWindow::on_yes_clicked()
