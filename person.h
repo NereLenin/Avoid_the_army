@@ -1,5 +1,7 @@
 #ifndef PERSON_H
 #define PERSON_H
+
+#include <QSound>
 #include "scene_object.h"
 #include "block.h"
 
@@ -16,8 +18,10 @@ private:
 
     int block_count;
 
+    QSound *jump_sound;
+
 public:
-    explicit Person(int x, int y, QString image_path,QWidget* central_widget);
+    explicit Person(int x, int y, QString image_path, QString jump_sound_path, QWidget* central_widget);
 
     void set_StickNumber(int block_number);
     int get_StickNumber();

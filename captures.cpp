@@ -11,7 +11,7 @@ Captures::Captures(QString yes_img, QString no_img,QWidget *parent) :
     setAlignment(Qt::AlignCenter);
 
     //просто this конструктор?
-    setStyleSheet("background-color: rgba(1,1,1, 1);color:white;");
+    setStyleSheet("background-color: rgba(1,1,1, 0.99);color:white;");
     start_scene = end_scene = false;
     i=0;
 
@@ -67,7 +67,7 @@ void Captures::reprint()
         }
     }else if(end_scene)
     {
-        if(i<0.95)//затемнение по красоте
+        if(i<0.99)//затемнение по красоте
         {
         setStyleSheet(QString("background-color: rgba(1,1,1, %1);color:white;").arg(i));
 

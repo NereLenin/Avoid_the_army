@@ -122,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //создаем персонажа
-    person = new Person(10,10,":/img/person_2.png",ui->centralwidget);
+    person = new Person(10,10,":/img/person_2.png", ":/music/jump.wav" ,ui->centralwidget);
     person->setFrameShape(QFrame::Box);//добавляем наглядную рамку
 
     person->SetBlocksToStick(blocks,4);//добавляем блоки к которым будем прилипать
@@ -230,7 +230,11 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    //toStartPosition();
 
+    //person_y+=10;
+    //reprint(ui);
+   // qDebug() << "y:" << person_y << endl;
     person->stopAnimation();
     person->set_StickNumber(0);
     person->set_x(person->get_x()+1);

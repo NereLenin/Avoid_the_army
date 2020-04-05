@@ -1,6 +1,6 @@
 #include "person.h"
 
-Person::Person(int x, int y,QString image_path, QWidget* central_widget)
+Person::Person(int x, int y,QString image_path, QString jump_sound_path, QWidget* central_widget)
     : Scene_object(x,y,"",central_widget)
 {
     n_height = 20;
@@ -13,7 +13,8 @@ Person::Person(int x, int y,QString image_path, QWidget* central_widget)
 
     setStyleSheet(QString("image:url(%1);").arg(image_path));
     setScaledContents(false);
-    //show();
+
+    jump_sound = new QSound(jump_sound_path,this);
 }
 
 double Person::get_form_y()
@@ -119,7 +120,7 @@ void Person::set_StickNumber(int block_number)
         stick_number = block_number;
          Animation = true;
 
-        //Animation = (stick_number!=0);
+         jump_sound->play();//включаем звук прыжка
 
     }
 

@@ -1,7 +1,7 @@
 QT       += core gui
 #QMAKE_LFLAGS += -static -static-libgcc
 
-QMAKE_LFLAGS += -nostdlib++
+#QMAKE_LFLAGS += -nostdlib++
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
