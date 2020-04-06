@@ -12,9 +12,9 @@ Person::Person(int x, int y,QString image_path, QString jump_sound_path, QWidget
     Animation = false;
     direction_jump = true; //left, true - to right
 
-    sprite_straight = image_path;
+    sprite_straight = image_path;//начинаем игру со стоящим спрайтом повернутым вправо
 
-    sprite_naklon =  sprite_jump = "";
+    sprite_naklon =  sprite_jump = "";//по умолчанию обнуляем все остальные
 
     sprite_jump_l = sprite_straight_l = sprite_naklon_l = "";
 
@@ -42,7 +42,7 @@ double Person::get_form_y()
 }
 void Person::reprint()
 {
-    if(blocks != 0)
+    if(blocks != 0)//если блоки заданы
     {
 
     if(Animation)//если воспроизводится анимация, при перемещении на другой блок
@@ -51,44 +51,43 @@ void Person::reprint()
         //qDebug() << "animation true " << endl;
         //
         if(sprite_naklon!="" && sprite_jump != ""&&
-           sprite_straight_l!="" && sprite_naklon_l != ""&& sprite_jump_l != "")
+           sprite_straight_l!="" && sprite_naklon_l != ""&& sprite_jump_l != "")//если текстуры спрайтов заданы
         {
-
-        switch (animation_frame) {
+        //rewrite this
+        switch (animation_frame) {//на каких фрэймах анимации прыжка какой спрайт использовать
             case 1:
-            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_naklon));
-            else setStyleSheet(QString("image:url(%1);").arg(sprite_naklon_l));
-            break;//наклон
-            case 4:
-            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_jump));
+            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_naklon));//ставим чтобы наклонялся
+            else setStyleSheet(QString("image:url(%1);").arg(sprite_naklon_l));//если направление прыжка левое ставим налево
+            break;
+            case 4://ждем 4 фрэйма
+            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_jump));//ставим полет/падение
             else setStyleSheet(QString("image:url(%1);").arg(sprite_jump_l));
-            break;//наклон
-           // case 7: setStyleSheet(QString("image:url(%1);").arg(sprite_naklon)); break;//наклон
-            case 12:
-            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_straight));
+            break;
+            case 12://на предпоследнем фрэйме
+            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_straight));//ставим прямо
             else setStyleSheet(QString("image:url(%1);").arg(sprite_straight_l));
             break;
         }
         }
 
-        animation_frame++;
+        animation_frame++;//увеличиваем фрэйм
 
-        int t2_x,t2_y;
+        double t2_x,t2_y;//временные переменные для расчета конечной координаты
 
         if(animation_frame>4)
         {
         //определяем конечные координаты
-        t2_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/5);
-        t2_y = blocks[stick_number-1]->get_y() + (blocks[stick_number-1]->get_n_height());
+        t2_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/2) - (get_n_width()/2);//конечная по x
+        t2_y = blocks[stick_number-1]->get_y() + (blocks[stick_number-1]->get_n_height());//конечная по y
 
-        //идем часть 1/10 пути до конечной точки
+        //идем часть 1/13 пути до конечной точки
         n_x = n_x + (((t2_x-n_x)/(14-animation_frame)));
         n_y = n_y + (((t2_y-n_y)/(14-animation_frame)));
 
-        if(animation_frame >= 13)
+        if(animation_frame >= 13)//если анимация прыжка на блок кончилась
         {
             //переносим в конечную точку(на всякий)
-            n_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/5);
+            n_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/2) - (get_n_width()/2);
             n_y = blocks[stick_number-1]->get_y() + (blocks[stick_number-1]->get_n_height());
 
             //заканчиваем анимацию
@@ -100,7 +99,7 @@ void Person::reprint()
     }else if(stick_number != 0)//если анимации нет, но он привязан к блоку
     {
         //qDebug() << "stick yep" << endl;
-        n_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/5);
+        n_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/2) - (get_n_width()/2);
         n_y = blocks[stick_number-1]->get_y() + (blocks[stick_number-1]->get_n_height());
 
          //если блок ушел за пределы окна а мы на нем
@@ -115,6 +114,12 @@ void Person::reprint()
 
         if(n_y >0)//если мы не к чему не привязаны и анимации нет
         {
+            //показываем спрайтом что падаем вниз
+            if(sprite_jump != "" && sprite_jump_l!="")
+            {
+                if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_jump));
+                else setStyleSheet(QString("image:url(%1);").arg(sprite_jump_l));
+            }
             n_y-=2;//падаем вниз до нуля или блока
 
             for(int i=0;i<block_count;i++)//смотрим не упал ли на какой блок
@@ -125,6 +130,7 @@ void Person::reprint()
                    get_y() >= blocks[i]->get_y())
                    //get_y()+get_n_height() > blocks[i]->get_y()+blocks[i]->get_n_height())
                 {
+                    //здесь спрайтом показывать что мы привязались не нужно тк set_StickNumber ее сам отметит
                     stopAnimation();
                     //stick_number = i+1;
                     set_StickNumber(i+1);//если упал привязываем
@@ -147,7 +153,15 @@ void Person::reprint()
         n_x = coord_max-get_n_width();
     }
 
-    if(n_y < 10) n_y = 10;
+    if(n_y < 10) //если упали до земли
+    {
+        if(sprite_straight != "" && sprite_straight_l!="")
+        {
+            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_straight));//становим прямо
+            else setStyleSheet(QString("image:url(%1);").arg(sprite_straight_l));
+        }
+        n_y = 10;
+    }
 
 
     setGeometry(get_form_x(),get_form_y(),get_form_width(),get_form_height());
@@ -165,7 +179,9 @@ void Person::set_StickNumber(int block_number)
 
          jump_sound->play();//включаем звук прыжка
 
-         direction_jump =  blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/2) >= get_x()+(get_n_width()/2);
+         //если x середины блока больше чем середина персонажа, поворачиваем направо
+         //false - налево, true - направо
+         direction_jump =  (blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/2)) >= (get_x()+(get_n_width()/2));
 
     }
 

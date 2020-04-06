@@ -161,7 +161,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //соединяем с слотом на форме
     connect(timer, SIGNAL(timeout()), this, SLOT(slotTimerAlarm()));
-    timer->start(120);//30
+    timer->start(30);//30
 
     //создаем воспроизведение музыки
     sound = new QSound(":/music/main.wav",this);
