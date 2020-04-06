@@ -10,6 +10,13 @@ Person::Person(int x, int y,QString image_path, QString jump_sound_path, QWidget
     animation_frame = 0;
 
     Animation = false;
+    direction_jump = true; //left, true - to right
+
+    sprite_straight = image_path;
+
+    sprite_naklon =  sprite_jump = "";
+
+    sprite_jump_l = sprite_straight_l = sprite_naklon_l = "";
 
     setStyleSheet(QString("image:url(%1);").arg(image_path));
     setScaledContents(false);
@@ -17,10 +24,16 @@ Person::Person(int x, int y,QString image_path, QString jump_sound_path, QWidget
     jump_sound = new QSound(jump_sound_path,this);
 }
 
-void Person::setSprites(QString sprites[3])
+void Person::setSprites(QString sprite_naklon, QString jump_sprite,
+                        QString sprite_straight_l, QString sprite_naklon_l, QString sprite_jump_l)
 {
-    for(int i=0;i<3;i++)
-         this->sprites[i] = sprites[i];
+    this->sprite_naklon = sprite_naklon;
+    this->sprite_jump = jump_sprite;
+
+    this->sprite_straight_l = sprite_straight_l;
+    this->sprite_naklon_l = sprite_naklon_l;
+    this->sprite_jump_l = sprite_jump_l;
+
 }
 
 double Person::get_form_y()
@@ -37,27 +50,42 @@ void Person::reprint()
 
         //qDebug() << "animation true " << endl;
         //
-        switch (animation_frame) {
-            case 1: setStyleSheet(QString("image:url(%1);").arg(sprites[0])); break;//наклон
-            case 3: break;//полет
-            case 7: break;//наклон
-            case 9: break;//ровно
+        if(sprite_naklon!="" && sprite_jump != ""&&
+           sprite_straight_l!="" && sprite_naklon_l != ""&& sprite_jump_l != "")
+        {
 
+        switch (animation_frame) {
+            case 1:
+            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_naklon));
+            else setStyleSheet(QString("image:url(%1);").arg(sprite_naklon_l));
+            break;//наклон
+            case 4:
+            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_jump));
+            else setStyleSheet(QString("image:url(%1);").arg(sprite_jump_l));
+            break;//наклон
+           // case 7: setStyleSheet(QString("image:url(%1);").arg(sprite_naklon)); break;//наклон
+            case 12:
+            if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_straight));
+            else setStyleSheet(QString("image:url(%1);").arg(sprite_straight_l));
+            break;
+        }
         }
 
         animation_frame++;
 
         int t2_x,t2_y;
 
+        if(animation_frame>4)
+        {
         //определяем конечные координаты
         t2_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/5);
         t2_y = blocks[stick_number-1]->get_y() + (blocks[stick_number-1]->get_n_height());
 
         //идем часть 1/10 пути до конечной точки
-        n_x = n_x + (((t2_x-n_x)/(11-animation_frame)));
-        n_y = n_y + (((t2_y-n_y)/(11-animation_frame)));
+        n_x = n_x + (((t2_x-n_x)/(14-animation_frame)));
+        n_y = n_y + (((t2_y-n_y)/(14-animation_frame)));
 
-        if(animation_frame >= 10)
+        if(animation_frame >= 13)
         {
             //переносим в конечную точку(на всякий)
             n_x = blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/5);
@@ -67,6 +95,7 @@ void Person::reprint()
             Animation = false;
             animation_frame = 0;
         }
+      }
 
     }else if(stick_number != 0)//если анимации нет, но он привязан к блоку
     {
@@ -135,6 +164,8 @@ void Person::set_StickNumber(int block_number)
          Animation = true;
 
          jump_sound->play();//включаем звук прыжка
+
+         direction_jump =  blocks[stick_number-1]->get_x() + (blocks[stick_number-1]->get_n_width()/2) >= get_x()+(get_n_width()/2);
 
     }
 

@@ -12,6 +12,7 @@ private:
 
     int animation_frame;
     bool Animation;
+    bool direction_jump;
     int stick_number;
 
     Block **blocks;
@@ -19,11 +20,21 @@ private:
     int block_count;
 
     QSound *jump_sound;
-    QString sprites[3];
+
+    QString sprite_straight;
+    QString sprite_naklon;
+    QString sprite_jump;
+
+    QString sprite_straight_l;
+    QString sprite_naklon_l;
+    QString sprite_jump_l;
+
 
 public:
     explicit Person(int x, int y, QString image_path, QString jump_sound_path, QWidget* central_widget);
-    void setSprites(QString sprites[4]);
+    void setSprites(QString sprite_naklon, QString jump_sprite,
+                    QString sprite_straight_l, QString sprite_naklon_l, QString sprite_jump_l);
+
     void set_StickNumber(int block_number);
     int get_StickNumber();
 

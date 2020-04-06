@@ -121,11 +121,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //создаем персонажа
-    person = new Person(10,10,":/img/person_2.png", ":/music/jump.wav" ,ui->centralwidget);
+    person = new Person(10,10,":/img/person.png", ":/music/jump.wav" ,ui->centralwidget);
     //person->setFrameShape(QFrame::Box);//добавляем наглядную рамку
 
     person->SetBlocksToStick(blocks,4);//добавляем блоки к которым будем прилипать
-
+    person->setSprites(":/img/person_2.png",":/img/person_3.png",
+                       ":/img/person_l.png",":/img/person_l_2.png",":/img/person_l_3.png");
     //создаем повестку
     povistka = new Povistka(30,30,":/img/convert_2.jpg",ui->centralwidget);
     povistka->SetRecipient(person);
@@ -160,7 +161,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //соединяем с слотом на форме
     connect(timer, SIGNAL(timeout()), this, SLOT(slotTimerAlarm()));
-    timer->start(30);
+    timer->start(120);//30
 
     //создаем воспроизведение музыки
     sound = new QSound(":/music/main.wav",this);
