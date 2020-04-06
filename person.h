@@ -19,10 +19,11 @@ private:
     int block_count;
 
     QSound *jump_sound;
+    QString sprites[3];
 
 public:
     explicit Person(int x, int y, QString image_path, QString jump_sound_path, QWidget* central_widget);
-
+    void setSprites(QString sprites[4]);
     void set_StickNumber(int block_number);
     int get_StickNumber();
 

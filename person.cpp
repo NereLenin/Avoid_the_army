@@ -17,6 +17,12 @@ Person::Person(int x, int y,QString image_path, QString jump_sound_path, QWidget
     jump_sound = new QSound(jump_sound_path,this);
 }
 
+void Person::setSprites(QString sprites[3])
+{
+    for(int i=0;i<3;i++)
+         this->sprites[i] = sprites[i];
+}
+
 double Person::get_form_y()
 {
     return (parentWidget()->height())-((parentWidget()->height()/coord_max) * (n_y+(n_height*0.85)));
@@ -30,6 +36,14 @@ void Person::reprint()
     {
 
         //qDebug() << "animation true " << endl;
+        //
+        switch (animation_frame) {
+            case 1: setStyleSheet(QString("image:url(%1);").arg(sprites[0])); break;//наклон
+            case 3: break;//полет
+            case 7: break;//наклон
+            case 9: break;//ровно
+
+        }
 
         animation_frame++;
 

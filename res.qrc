@@ -11,6 +11,8 @@
         <file>img/err.png</file>
         <file>img/ok.png</file>
         <file>music/jump.wav</file>
+        <file>img/person.png</file>
+        <file>img/person_3.png</file>
     </qresource>
     <qresource prefix="/music"/>
 </RCC>
