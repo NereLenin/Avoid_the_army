@@ -3,7 +3,7 @@
 #define SCENE_OBJECT_H
 #include <QLabel>
 #include <QDebug>
-class Scene_object : protected QLabel//: protected QLabel
+class Scene_object : public QLabel
 {
    Q_OBJECT
 protected:

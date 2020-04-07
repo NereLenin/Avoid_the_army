@@ -70,12 +70,6 @@ private:
     Terrain *terrain;
 
     Captures *titles;
-    //Scene_object *end_fon;
-
-   // Block *yes;
-   // Block *no;
-
-    double i;
 
     QSound *sound;
     QSound *end_sound;

@@ -4,6 +4,7 @@ Povistka::Povistka(int x, int y,QString pixmap_path, QWidget* central_widget)
     : Moving_object(x,y,false,pixmap_path,central_widget)
 {
 
+   avoid_count = 0;
    recipient = 0;
    n_height = 9;
    width_per_height = 1.3;
@@ -11,29 +12,41 @@ Povistka::Povistka(int x, int y,QString pixmap_path, QWidget* central_widget)
 }
 
 
+int Povistka::get_avoid_count()
+{
+    return avoid_count;
+}
+void Povistka::set_avoid_count(int new_count)
+{
+    avoid_count = new_count;
+}
+
 void Povistka::SetRecipient(Person *person)
 {
-    if(person == 0) return;
-
-    recipient = person;
+    if(person != 0) recipient = person;
 
 
 }
 void Povistka::reprint()
 {
-    if(recipient == 0)
+    if(recipient != 0)
     {
-        return;
-    }
 
 
-    if((n_x >coord_max+5))
+    if((n_x >coord_max))
     {
         n_y = recipient->get_y() + (recipient->get_n_height()/3);
         speed+=0.01;
     }
+    if(n_x >= coord_max && (n_x - speed) < coord_max) avoid_count++;
+
+
+    }
+
 
     Moving_object::reprint();
+
+
 }
 
 bool Povistka::isDilivered()

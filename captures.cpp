@@ -52,7 +52,7 @@ void Captures::reprint()
 
     if(start_scene)
     {
-         if(i<0.95)//просветление по красоте
+         if(i<0.80)//просветление по красоте
         {
            yes->hide();
            no->hide();

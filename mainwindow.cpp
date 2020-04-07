@@ -12,24 +12,19 @@ void MainWindow::reprint(Ui::MainWindow *ui)
             blocks[j]->reprint();
         }
 
-
     povistka->reprint();
-
     person->reprint();
 
-    //qDebug() << "person " << person->get_x() << "," << person->get_y()<< " form" << person->get_form_x() << "," << person->get_form_y()  << "form width " << person->get_form_width() << "/" << person->width() << " per " << person->width_per_height << " width " << person->get_n_width() << endl;
-
- /*   if(povistka->isDilivered())
+   if(povistka->isDilivered())
     {
-        i=0;
         gotcha = true;
         sound->stop();
-        titles->setText("Попалась, вонючка?\nПопробуешь еще раз?");
+        titles->setText(QString("Вы избежали %1 повесток.\nМожет еще раз?").arg(povistka->get_avoid_count()));
         titles->show_end_scene();
         end_sound->play();
 
     }
-*/
+
 
     }
 
@@ -39,11 +34,12 @@ void MainWindow::toStartPosition()
 {
 
     person->set_x(10);
-    person->set_y(10);
+    person->set_y(7);
     person->stopAnimation();
     povistka->set_x(30);
     povistka->set_y(30);
     povistka->reset_speed();
+    povistka->set_avoid_count(0);
 
     for(int j=0;j<4;j++)//создаем каждый блок
     {
@@ -56,10 +52,6 @@ void MainWindow::toStartPosition()
     end_sound->stop();
     sound->play();
 
-  //  yes->hide();
- //   no->hide();
- //   end_fon->hide();
- //   end_fon->setStyleSheet("background-color: rgba(1,1,1, 0);color:white;");
 }
 
 
@@ -70,23 +62,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
-
-
-   // lines = new QFrame*[100];//массив блоков
-
-  //  for(int j=0;j<100;j++)//массив линий
- //   {
-
-  //      lines[j] = new QFrame(this);
- //       lines[j]->hide();
-  //  }
-
-
     gotcha = want_exit = ready_to_play = false;
 
     first_start = true;
 
-    i=0;
 
     //прячем старое
     ui->person->hide();
@@ -95,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_2->hide();
     ui->pushButton_4->hide();
     ui->pushButton->hide();
-  //  ui->pushButton_3->hide();
+    ui->pushButton_3->hide();
 
     //создаем землю
     terrain = new Terrain(11,":/img/terrain.png",ui->centralwidget);
@@ -171,6 +150,8 @@ void MainWindow::resizeEvent(QResizeEvent* event=0)//все это потом н
     //обновляет размеры и положения всех обьектов
 
    ui->background->resize(event->size());
+   ui->avoid_count_label->resize(event->size().width(),ui->avoid_count_label->height());
+
    titles->new_resize();
 
 
@@ -212,10 +193,10 @@ void MainWindow::on_pushButton_3_clicked()
     //person_y+=10;
     //reprint(ui);
    // qDebug() << "y:" << person_y << endl;
-    person->stopAnimation();
-    person->set_StickNumber(0);
-    person->set_x(person->get_x()+1);
-    person->set_y(person->get_y()-30);
+  //  person->stopAnimation();
+   // person->set_StickNumber(0);
+  //  person->set_x(person->get_x()+1);
+  //  person->set_y(person->get_y()-30);
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -248,7 +229,7 @@ void MainWindow::on_block3_clicked()
        blocks[2]->start_animation();
 
     person->set_StickNumber(3);
-\
+
 }
 
 void MainWindow::on_block4_clicked()
@@ -299,7 +280,7 @@ void MainWindow::on_no_clicked()
         if(first_start)
            titles->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
         else
-        titles->setText("Попалась, вонючка?\nПопробуешь еще раз?");
+        titles->setText(QString("Вы избежали %1 повесток.\nМожет еще раз?").arg(povistka->get_avoid_count()));
 
         want_exit = false;
     }
@@ -322,8 +303,7 @@ void MainWindow::slotTimerAlarm()
 
     }else if(!gotcha){//если не первый старт и игра не закончена
 
-    ui->block_old->setText(QString::number(i+=0.01));
-
+    ui->avoid_count_label->setText(QString("%1 повесток прошло мимо").arg(povistka->get_avoid_count()));
     reprint(ui);//перересовываем сцену
 
     }
