@@ -98,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent)
   //  ui->pushButton_3->hide();
 
     //создаем землю
-    terrain = new Terrain(11,":/img/terrain.jpg",ui->centralwidget);
+    terrain = new Terrain(11,":/img/terrain.png",ui->centralwidget);
 
     //создаем обьекты
     blocks = new Block*[4];//массив блоков
@@ -109,7 +109,7 @@ MainWindow::MainWindow(QWidget *parent)
     for(int j=0;j<4;j++)//создаем каждый блок
     {
         ne_chentniy = (j % 2 != 0);
-        blocks[j] = new Block(10+(j*23),20+(j*19),ne_chentniy,":/img/block.png",ui->centralwidget);
+        blocks[j] = new Block(10+(j*23),20+(j*19),ne_chentniy,QString(":/img/block_%1.png").arg(j+1),ui->centralwidget);
     }
 
 
@@ -121,42 +121,25 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //создаем персонажа
-    person = new Person(10,10,":/img/person.png", ":/music/jump.wav" ,ui->centralwidget);
+    person = new Person(10,7,":/img/person.png", ":/music/jump.wav" ,ui->centralwidget);
     //person->setFrameShape(QFrame::Box);//добавляем наглядную рамку
 
     person->SetBlocksToStick(blocks,4);//добавляем блоки к которым будем прилипать
     person->setSprites(":/img/person_2.png",":/img/person_3.png",
                        ":/img/person_l.png",":/img/person_l_2.png",":/img/person_l_3.png");
     //создаем повестку
-    povistka = new Povistka(30,30,":/img/convert_2.jpg",ui->centralwidget);
+    povistka = new Povistka(30,30,":/img/povistka.png",ui->centralwidget);
     povistka->SetRecipient(person);
 
     titles = new Captures(":/img/ok.png",":/img/err.png",ui->centralwidget);
     titles->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
 
-    //создаем задний фон который делает
-   // end_fon = new Scene_object(0,0,"",ui->centralwidget);
-
-    //"Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?"
-
-    //end_fon->show();
-//    end_fon->hide();
-
-
-    //выбор при проигрыше
-    //вместо блока добавить класс clickable object и занаследоваться от него в povistka и тут сделать
-   // yes = new Block(75,10,false,":/img/ok.png",ui->centralwidget);
-   // yes->set_height(10);
-    //yes->set_width_per_height(1);
-
-    //no = new Block(10,10,false,":/img/err.png",ui->centralwidget);
-    //no->set_height(10);
-    //no->set_width_per_height(1);
-
     connect(titles->get_yes_btn(), SIGNAL(clicked()), this, SLOT(on_yes_clicked()));
     connect(titles->get_no_btn(), SIGNAL(clicked()), this, SLOT(on_no_clicked()));
 
     //создаем перерисовочный таймер
+
+
     timer = new QTimer();
 
     //соединяем с слотом на форме
@@ -166,16 +149,10 @@ MainWindow::MainWindow(QWidget *parent)
     //создаем воспроизведение музыки
     sound = new QSound(":/music/main.wav",this);
     sound->setLoops(QSound::Infinite);//воспроизводим бесконечно
-  //  sound->play();//говорим играть
 
     end_sound = new QSound(":/music/end.wav",this);
     end_sound->setLoops(QSound::Infinite);//воспроизводим бесконечно
     end_sound->stop();//говорим не играть
-
-   // paint = new QPainter(this);//[100];//массив блоков
-
-
-
 
 }
 

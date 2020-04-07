@@ -153,14 +153,14 @@ void Person::reprint()
         n_x = coord_max-get_n_width();
     }
 
-    if(n_y < 10) //если упали до земли
+    if(n_y < 6) //если упали до земли
     {
         if(sprite_straight != "" && sprite_straight_l!="")
         {
             if(direction_jump) setStyleSheet(QString("image:url(%1);").arg(sprite_straight));//становим прямо
             else setStyleSheet(QString("image:url(%1);").arg(sprite_straight_l));
         }
-        n_y = 10;
+        n_y = 6;
     }
 
 
