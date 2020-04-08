@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QResizeEvent>
-#include <QDebug>
 #include <QTimer>
 #include <QSound>
 
@@ -38,15 +37,15 @@ private slots:
 
     void on_pushButton_4_clicked();
 
-    void on_block1_clicked();
-    void on_block2_clicked();
-    void on_block3_clicked();
-    void on_block4_clicked();
+    void block1_clicked();
+    void block2_clicked();
+    void block3_clicked();
+    void block4_clicked();
 
     void slotTimerAlarm();
 
-    void on_yes_clicked();
-    void on_no_clicked();
+    void yes_clicked();
+    void no_clicked();
 private:
     Ui::MainWindow *ui;
     void resizeEvent(QResizeEvent* event);

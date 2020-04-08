@@ -33,7 +33,7 @@ void Block::reprint()
 
     if(animation)
     {
-            qDebug() << n_height << " i " << i << endl;
+            //qDebug() << n_height << " i " << i << endl;
 
 
 

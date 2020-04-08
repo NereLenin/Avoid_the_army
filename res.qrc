@@ -13,12 +13,12 @@
         <file>img/person_l.png</file>
         <file>img/person_l_2.png</file>
         <file>img/person_l_3.png</file>
-        <file>img/block_2.png</file>
-        <file>img/block_3.png</file>
-        <file>img/block_4.png</file>
-        <file>img/block_1.png</file>
-        <file>img/terrain.png</file>
-        <file>img/povistka.png</file>
+        <file>img/block_1.jpg</file>
+        <file>img/block_2.jpg</file>
+        <file>img/block_3.jpg</file>
+        <file>img/block_4.jpg</file>
+        <file>img/povistka.jpg</file>
+        <file>img/terrain.jpg</file>
     </qresource>
     <qresource prefix="/music"/>
 </RCC>

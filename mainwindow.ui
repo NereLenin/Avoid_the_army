@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="res.qrc">
-    <normaloff>:/img/povistka.png</normaloff>:/img/povistka.png</iconset>
+    <normaloff>:/img/povistka.jpg</normaloff>:/img/povistka.jpg</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -87,7 +87,7 @@ image:url(:/img/person_2.png);
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="res.qrc">:/img/terrain.png</pixmap>
+     <pixmap>:/img/terrain.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -238,7 +238,7 @@ background:url(&quot;:/img/background.jpg&quot;);
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="res.qrc">:/img/povistka.png</pixmap>
+     <pixmap>:/img/povistka.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>

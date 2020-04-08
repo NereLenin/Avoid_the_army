@@ -2,7 +2,6 @@
 #ifndef SCENE_OBJECT_H
 #define SCENE_OBJECT_H
 #include <QLabel>
-#include <QDebug>
 class Scene_object : public QLabel
 {
    Q_OBJECT

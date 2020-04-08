@@ -24,15 +24,12 @@ void Moving_object::reprint()
   if((!direction)&&(n_x+get_n_width()) <=0-get_n_width())
   {
 
-     //int rand = 1+rand()%50;//потом
 
      n_x = coord_max+get_n_width();
   }
 
   if((direction)&& (n_x) >= coord_max+get_n_width())
   {
-
-     //int rand = 1+rand()%50;//потом
 
      n_x = 0-get_n_width();
   }

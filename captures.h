@@ -14,8 +14,6 @@ protected:
     Img_button *yes;
     Img_button *no;
 
-
-
 public:
     Captures(QString yes_img, QString no_img, QWidget *parent);
 

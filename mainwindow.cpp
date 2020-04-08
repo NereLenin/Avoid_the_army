@@ -22,7 +22,6 @@ void MainWindow::reprint(Ui::MainWindow *ui)
         titles->setText(QString("Вы избежали %1 повесток.\nМожет еще раз?").arg(povistka->get_avoid_count()));
         titles->show_end_scene();
         end_sound->play();
-
     }
 
 
@@ -77,44 +76,42 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_3->hide();
 
     //создаем землю
-    terrain = new Terrain(11,":/img/terrain.png",ui->centralwidget);
+    terrain = new Terrain(11,":/img/terrain.jpg",ui->centralwidget);
 
     //создаем обьекты
     blocks = new Block*[4];//массив блоков
-
-
 
     bool ne_chentniy;
     for(int j=0;j<4;j++)//создаем каждый блок
     {
         ne_chentniy = (j % 2 != 0);
-        blocks[j] = new Block(10+(j*23),20+(j*19),ne_chentniy,QString(":/img/block_%1.png").arg(j+1),ui->centralwidget);
+        blocks[j] = new Block(10+(j*23),20+(j*19),ne_chentniy,QString(":/img/block_%1.jpg").arg(j+1),ui->centralwidget);
     }
 
 
     //соединяем их со слотами
-    connect(blocks[0], SIGNAL(clicked()), this, SLOT(on_block1_clicked()));
-    connect(blocks[1], SIGNAL(clicked()), this, SLOT(on_block2_clicked()));
-    connect(blocks[2], SIGNAL(clicked()), this, SLOT(on_block3_clicked()));
-    connect(blocks[3], SIGNAL(clicked()), this, SLOT(on_block4_clicked()));
+    connect(blocks[0], SIGNAL(clicked()), this, SLOT(block1_clicked()));
+    connect(blocks[1], SIGNAL(clicked()), this, SLOT(block2_clicked()));
+    connect(blocks[2], SIGNAL(clicked()), this, SLOT(block3_clicked()));
+    connect(blocks[3], SIGNAL(clicked()), this, SLOT(block4_clicked()));
 
 
     //создаем персонажа
-    person = new Person(10,7,":/img/person.png", ":/music/jump.wav" ,ui->centralwidget);
+    person = new Person(10,6,":/img/person.png", ":/music/jump.wav" ,ui->centralwidget);
     //person->setFrameShape(QFrame::Box);//добавляем наглядную рамку
 
     person->SetBlocksToStick(blocks,4);//добавляем блоки к которым будем прилипать
     person->setSprites(":/img/person_2.png",":/img/person_3.png",
                        ":/img/person_l.png",":/img/person_l_2.png",":/img/person_l_3.png");
     //создаем повестку
-    povistka = new Povistka(30,30,":/img/povistka.png",ui->centralwidget);
+    povistka = new Povistka(30,30,":/img/povistka.jpg",ui->centralwidget);
     povistka->SetRecipient(person);
 
     titles = new Captures(":/img/ok.png",":/img/err.png",ui->centralwidget);
     titles->setText("Правила игры:\n1)Прыгайте по блокам,\n кликая по ним\n2)Уворачивайтесь от\n повестки\nГотовы?");
 
-    connect(titles->get_yes_btn(), SIGNAL(clicked()), this, SLOT(on_yes_clicked()));
-    connect(titles->get_no_btn(), SIGNAL(clicked()), this, SLOT(on_no_clicked()));
+    connect(titles->get_yes_btn(), SIGNAL(clicked()), this, SLOT(yes_clicked()));
+    connect(titles->get_no_btn(), SIGNAL(clicked()), this, SLOT(no_clicked()));
 
     //создаем перерисовочный таймер
 
@@ -206,7 +203,7 @@ void MainWindow::on_pushButton_4_clicked()
     //qDebug() << "y:" << person_y << endl;
 }
 
-void MainWindow::on_block1_clicked()
+void MainWindow::block1_clicked()
 {
     if(person->get_StickNumber()!=1)
        blocks[0]->start_animation();
@@ -215,7 +212,7 @@ void MainWindow::on_block1_clicked()
 
 }
 
-void MainWindow::on_block2_clicked()
+void MainWindow::block2_clicked()
 {
     if(person->get_StickNumber()!=2)
        blocks[1]->start_animation();
@@ -223,7 +220,7 @@ void MainWindow::on_block2_clicked()
     person->set_StickNumber(2);
 }
 
-void MainWindow::on_block3_clicked()
+void MainWindow::block3_clicked()
 {
     if(person->get_StickNumber()!=3)
        blocks[2]->start_animation();
@@ -232,7 +229,7 @@ void MainWindow::on_block3_clicked()
 
 }
 
-void MainWindow::on_block4_clicked()
+void MainWindow::block4_clicked()
 {
 
     if(person->get_StickNumber()!=4)
@@ -242,12 +239,11 @@ void MainWindow::on_block4_clicked()
 
 }
 
-void MainWindow::on_yes_clicked()
+void MainWindow::yes_clicked()
 {
 
     if(want_exit)
     {
-
         close();
     }
     else if(first_start)
@@ -268,7 +264,7 @@ void MainWindow::on_yes_clicked()
 
 }
 
-void MainWindow::on_no_clicked()
+void MainWindow::no_clicked()
 {
     if(!want_exit)
     {

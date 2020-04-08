@@ -1,11 +1,9 @@
 #include "captures.h"
-#include <QDebug>
+
 
 Captures::Captures(QString yes_img, QString no_img,QWidget *parent) :
     Scene_object(0,0,"",parent)
 {
-    //this->start_text = start_text;
-    //this->end_text = end_text;
 
     setFont(QFont("Courier 10 Pitch",20,QFont::Bold));
     setAlignment(Qt::AlignCenter);
@@ -17,8 +15,9 @@ Captures::Captures(QString yes_img, QString no_img,QWidget *parent) :
 
     yes = new Img_button(75,10,yes_img,this);
     no = new Img_button(10,10,no_img,this);
-    yes->show();
-    no->show();
+
+   // yes->show();
+  //  no->show();
 }
 
 Img_button* Captures::get_yes_btn()
@@ -91,6 +90,7 @@ void Captures::hide()
 
     QLabel::hide();
 }
+
 
 bool Captures::get_start_scene()
 {
